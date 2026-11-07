@@ -1094,6 +1094,8 @@ dd {
 }
 .featured-content .button {
   margin-top: 7px;
+  font-size: 14px;
+  padding: 14px 30px;
 }
 .projects-grid {
   display: grid;

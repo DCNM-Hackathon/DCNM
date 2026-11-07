@@ -57,7 +57,7 @@ export default function ProjectsPage() {
                 </div>
               </dl>
               <Link className="button" href="/apply">
-                함께 만들기
+                함께 만들기 <ArrowUpRight size={17} />
               </Link>
             </div>
           </article>

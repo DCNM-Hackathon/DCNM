@@ -1092,6 +1092,7 @@ dd {
   margin: 0;
   color: #596377;
 }
+/* 프로젝트 페이지 "함께 만들기" 버튼 */
 .featured-content .button {
   margin-top: 7px;
   font-size: 14px;
@@ -2439,21 +2440,6 @@ input[type="checkbox"] {
   opacity: calc(1 - var(--hero-progress) * 6);
 }
 
-/* 진행 바 */
-.hero-progress-bar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2px;
-  background: var(--line);
-}
-.hero-progress-bar > div {
-  height: 100%;
-  background: var(--teal);
-  transform: scaleX(var(--hero-progress));
-  transform-origin: left;
-}
 
 /* ---------- 3. 섹션 제목: 태그 → 제목 → 설명 순서로 흐림이 걷히며 등장 ---------- */
 .reveal-ready [data-reveal="title"],
@@ -2560,9 +2546,6 @@ input[type="checkbox"] {
   .hero-art .orbit-one,
   .hero-art .orbit-two {
     rotate: none;
-  }
-  .hero-progress-bar {
-    display: none;
   }
   .reveal-ready [data-reveal] :is(.eyebrow, h2, p, .text-link, .button),
   .reveal-ready [data-reveal] .reveal-line > span {

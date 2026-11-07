@@ -53,9 +53,10 @@ export function HeroScene() {
 
     // 장면이 고정되어 있는 동안 0 → 1
     const scrollable = scene.offsetHeight - sticky.offsetHeight;
-    const progress = prefersReducedMotion()
-      ? 1
-      : clamp(-scene.getBoundingClientRect().top / Math.max(scrollable, 1));
+    const progress =
+      prefersReducedMotion() || window.matchMedia("(max-width: 767px)").matches
+        ? 1
+        : clamp(-scene.getBoundingClientRect().top / Math.max(scrollable, 1));
 
     // ① 첫 단어는 처음부터 채워져 있고, 0 ~ 55% 구간에서 나머지가 순서대로 채워짐
     const filled = 1 + clamp(progress / 0.55) * (words.length - 1);

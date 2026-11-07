@@ -2507,16 +2507,31 @@ input[type="checkbox"] {
 
 @media (max-width: 767px) {
   .hero-scene {
-    height: 200vh;
+    height: auto;
   }
   .hero-sticky {
-    top: 70px;
-    height: calc(100vh - 70px);
-    min-height: 520px;
+    position: relative;
+    top: 0;
+    height: auto;
+    min-height: 0;
   }
   .hero-sticky > .hero-inner {
-    padding-top: 0;
-    padding-bottom: 40px;
+    padding-top: 48px;
+    padding-bottom: 76px;
+  }
+  .hero-scene .hero-word,
+  .hero-scene .hero-copy > p,
+  .hero-scene .hero-actions,
+  .hero-scene .hero-footnote {
+    opacity: 1;
+    translate: none;
+    filter: none;
+  }
+  .hero-scene .hero-actions {
+    pointer-events: auto;
+  }
+  .hero-scene .scroll-hint {
+    opacity: 1;
   }
 }
 
@@ -2552,5 +2567,11 @@ input[type="checkbox"] {
     opacity: 1;
     transform: none;
     filter: none;
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: reduce) {
+  .hero-sticky {
+    min-height: 0;
   }
 }

@@ -64,7 +64,7 @@ export default function Home() {
     <>
       <ScrollReveal />
       <HeroScene />
-      {/* 히어로 스크롤 장면: 섹션이 길고, 안쪽 .hero-sticky 가 화면에 고정됨 */}
+      {/* PC는 고정 스크롤 연출, 모바일은 콘텐츠 높이에 맞춰 바로 표시 */}
       <section className="home-hero hero-scene">
         <div className="hero-sticky">
           <div className="hero-grid" />

@@ -2,14 +2,15 @@
 import { useRef, useState } from "react";
 import { ArrowRight, Users, X } from "lucide-react";
 import Link from "next/link";
-import { projects, stages } from "@/lib/data";
-export function Progress({ stage }: { stage: number }) {
+import { projects, type ProjectStatus } from "@/lib/data";
+export function StatusBadge({ status }: { status: ProjectStatus }) {
   return (
-    <div className="progress" aria-label={`진행 단계: ${stages[stage - 1]}`}>
-      {stages.map((s, i) => (
-        <span key={s} className={i < stage ? "filled" : ""} />
-      ))}
-    </div>
+    <span
+      className={`status-badge ${status === "진행 완료" ? "done" : "ongoing"}`}
+    >
+      <i />
+      {status}
+    </span>
   );
 }
 export default function Projects() {
@@ -69,17 +70,13 @@ export default function Projects() {
               <div className="project-content">
                 <div className="flex gap-2">
                   <span className="pill">{p.category}</span>
+                  <StatusBadge status={p.status} />
                   {p.recruit && (
                     <span className="pill orange">팀원 모집 중</span>
                   )}
                 </div>
                 <h3>{p.title}</h3>
                 <p>{p.description}</p>
-                <div className="stage-label">
-                  <span>진행 단계</span>
-                  <strong>{stages[p.stage - 1]}</strong>
-                </div>
-                <Progress stage={p.stage} />
                 <div className="project-meta">
                   <span>{p.tools}</span>
                   <span>
@@ -124,8 +121,8 @@ export default function Projects() {
                 <dd>{selected.team}명</dd>
               </div>
               <div>
-                <dt>진행 단계</dt>
-                <dd>{stages[selected.stage - 1]}</dd>
+                <dt>진행 상태</dt>
+                <dd>{selected.status}</dd>
               </div>
             </dl>
             <p className="sample-note">

@@ -244,7 +244,7 @@ export default function Home() {
             이곳에서 시작됩니다.
           </h2>
           <Link href="/apply" className="button">
-            DC&M과 함께하기 <ArrowUpRight size={17} />
+            DC&M과 함께하기
           </Link>
         </div>
       </section>

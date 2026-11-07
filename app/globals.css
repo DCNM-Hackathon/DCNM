@@ -256,13 +256,15 @@ small {
   color: #4b5b70;
   font-weight: 600;
 }
+/* 두 버튼을 글자 길이에 맞춘 같은 너비로 (긴 쪽 기준, 늘어나지 않음) */
 .hero-actions {
-  display: flex;
-  gap: 13px;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   margin-top: 33px;
 }
 .hero-actions .button {
-  min-width: 168px;
+  padding: 12px 24px;
 }
 .hero-footnote {
   display: flex;
@@ -1591,8 +1593,8 @@ input[type="checkbox"] {
     padding: 0;
   }
   .hero-kicker {
-    font-size: 7px;
-    letter-spacing: 1.3px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
   }
   .hero-copy h1 {
     font-size: 39px;
@@ -1601,28 +1603,29 @@ input[type="checkbox"] {
     line-height: 1.5;
   }
   .hero-copy > p {
-    font-size: 12px;
-    line-height: 1.95;
+    font-size: 14px;
+    line-height: 1.9;
   }
+  /* 모바일: 두 버튼이 한 줄을 반씩 나눠 채움 (너무 넓어지지 않게 최대 420px) */
   .hero-actions {
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 29px;
-    max-width: 360px;
-  }
-  .hero-actions .button {
+    display: grid;
     width: 100%;
-    justify-content: space-between;
-    padding: 12px 20px;
-  }
-  .hero-footnote {
-    font-size: 6px;
-    gap: 9px;
-    letter-spacing: 0.7px;
+    max-width: 420px;
     margin-top: 30px;
   }
+  .hero-actions .button {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+  .hero-footnote {
+    font-size: 9px;
+    gap: 10px;
+    letter-spacing: 1px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
   .scroll-hint {
-    font-size: 6px;
+    font-size: 9px;
     bottom: 21px;
   }
   .section {
@@ -1632,32 +1635,46 @@ input[type="checkbox"] {
     margin-bottom: 30px;
   }
   .section-title h2 {
-    font-size: 23px;
+    font-size: 24px;
     margin-top: 12px;
   }
   .section-title p {
-    font-size: 11px;
+    font-size: 14px;
     margin-top: 13px;
   }
   .eyebrow {
-    font-size: 8px;
-    padding: 4px 10px;
+    font-size: 10px;
+    padding: 4px 11px;
   }
+  /* 모바일: 한 줄에 하나씩, 아이콘 왼쪽 + 글은 오른쪽 (세로 길이 최소화) */
   .values-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px 20px;
-    margin-top: 35px;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 48px;
   }
+  .values-grid article {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    column-gap: 18px;
+    align-items: center;
+    text-align: left;
+  }
+  /* 아이콘을 키워드+설명 두 줄 높이에 맞춤 */
   .values-grid svg {
-    width: 29px;
-    margin-bottom: 14px;
+    grid-row: span 2;
+    align-self: center;
+    width: 46px;
+    height: 46px;
+    margin: 0;
   }
   .values-grid h3 {
-    font-size: 14px;
-    margin-bottom: 9px;
+    font-size: 17px;
+    margin-bottom: 3px;
   }
   .values-grid p {
-    font-size: 10px;
+    white-space: normal;
+    font-size: 13px;
+    line-height: 1.7;
   }
   .activity-card {
     display: grid;

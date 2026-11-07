@@ -1349,6 +1349,17 @@ input[type="checkbox"] {
 .honeypot {
   display: none;
 }
+.form-field input[type="file"] {
+  border: 1px dashed #dfe4ef;
+  background: #f8f9fc;
+  cursor: pointer;
+}
+.file-selected {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--blue);
+}
 .form-success {
   padding: 80px 35px;
   text-align: center;

@@ -116,7 +116,7 @@ export const projects = [
     category: "게임",
     description: "캠퍼스를 배경으로 한 2D 횡스크롤 러닝 게임을 만들고 있어요.",
     tools: "Unity · Aseprite",
-    stage: 2,
+    status: "진행 중" as ProjectStatus,
     team: 4,
     recruit: true,
     color: "blue",
@@ -129,7 +129,7 @@ export const projects = [
     category: "영상",
     description: "하루 동안의 캠퍼스 풍경을 담은 짧은 다큐멘터리 시리즈입니다.",
     tools: "Premiere · DaVinci",
-    stage: 3,
+    status: "진행 중" as ProjectStatus,
     team: 3,
     recruit: false,
     color: "navy",
@@ -143,7 +143,7 @@ export const projects = [
     description:
       "동아리 작업물을 모아 보는 공식 웹사이트를 새로 만들고 있어요.",
     tools: "React · Figma",
-    stage: 4,
+    status: "진행 중" as ProjectStatus,
     team: 5,
     recruit: false,
     color: "light",
@@ -156,7 +156,7 @@ export const projects = [
     category: "웹 · 앱",
     description: "하루의 감정을 색과 소리로 기록하는 감성 다이어리 앱입니다.",
     tools: "Flutter · Figma",
-    stage: 1,
+    status: "진행 중" as ProjectStatus,
     team: 3,
     recruit: true,
     color: "navy",
@@ -169,7 +169,7 @@ export const projects = [
     category: "미디어아트",
     description: "멤버 작품을 VR 공간에 전시하는 가상 갤러리를 설계 중이에요.",
     tools: "Unity · Blender",
-    stage: 2,
+    status: "진행 중" as ProjectStatus,
     team: 4,
     recruit: false,
     color: "light",
@@ -183,10 +183,10 @@ export const projects = [
     description:
       "동아리 로고와 브랜드를 움직임으로 표현하는 모션 시스템입니다.",
     tools: "After Effects",
-    stage: 4,
+    status: "진행 중" as ProjectStatus,
     team: 2,
     recruit: false,
     color: "blue",
   },
 ];
-export const stages = ["기획", "디자인", "제작", "테스트", "공개"];
+export type ProjectStatus = "진행 중" | "진행 완료";

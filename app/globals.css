@@ -39,6 +39,14 @@ button,
 a {
   -webkit-tap-highlight-color: transparent;
 }
+/* 마우스 클릭 시에는 포커스 링을 숨기고, 키보드(Tab) 이동 시에만 표시 */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+.button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
 a {
   text-decoration: none;
   color: inherit;
@@ -132,26 +140,30 @@ small {
   align-items: center;
   justify-content: center;
   gap: 22px;
-  border: 1px solid var(--navy);
+  border: 1.5px solid var(--navy);
   border-radius: 5px;
-  padding: 13px 23px;
+  padding: 13px 30px;
   font-size: 12px;
   font-weight: 650;
   transition:
     background 0.2s,
+    border-color 0.2s,
     transform 0.2s;
   line-height: 1.7;
 }
 .button:hover {
   background: #243664;
+  border-color: #243664;
   transform: translateY(-2px);
 }
-.button.outline {
+.button.button-outline {
   background: transparent;
   color: var(--navy);
-  border-color: #a1a9ba;
 }
-.button.outline:hover {
+.button.button-outline:hover {
+  border-color: var(--navy);
+}
+.button.button-outline:hover {
   background: white;
 }
 .button.white {
@@ -163,6 +175,31 @@ small {
   font-size: 10px;
   padding: 10px 17px;
   gap: 12px;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--navy);
+  padding: 0;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.theme-toggle:hover {
+  background: var(--soft);
+}
+.theme-toggle .icon-sun {
+  display: none;
 }
 .menu-button {
   display: none;
@@ -244,17 +281,22 @@ small {
   color: #4b5b70;
   font-weight: 600;
 }
+/* 두 버튼을 글자 길이에 맞춘 같은 너비로 (긴 쪽 기준, 늘어나지 않음) */
 .hero-actions {
-  display: flex;
-  gap: 13px;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   margin-top: 33px;
+}
+.hero-actions .button {
+  padding: 12px 24px;
 }
 .hero-footnote {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-top: 42px;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 1.15px;
   color: #7e8c9d;
   font-weight: 500;
@@ -285,7 +327,7 @@ small {
   z-index: 1;
   transform: rotate(-5deg);
 }
-.logo-disc img {
+.logo-disc .logo {
   width: 225px;
   height: 260px;
   filter: drop-shadow(6px 18px 12px #0d43521c);
@@ -349,7 +391,7 @@ small {
   position: absolute;
   bottom: 0;
   color: #8c9eae;
-  font-size: 8px;
+  font-size: 14px;
   letter-spacing: 2px;
 }
 .scroll-hint {
@@ -493,6 +535,8 @@ small {
   color: #d6dff3;
 }
 .showcase-card {
+  display: block;
+  height: 100%;
   background: white;
   overflow: hidden;
   border-radius: 8px;
@@ -852,11 +896,12 @@ footer {
 }
 .join-banner {
   padding: 60px 0;
-  background: var(--navy);
+  /* background: var(--navy); */
   color: white;
 }
 .join-banner h2 {
   font-size: 27px;
+  color: var(--navy);
   margin-bottom: 9px;
 }
 .join-banner p {
@@ -869,7 +914,7 @@ footer {
 .project-join {
   background: white;
   color: var(--navy);
-  border-top: 1px solid var(--line);
+  border-top: 1px solid #efefef;
 }
 .project-join p {
   color: var(--muted);
@@ -975,6 +1020,30 @@ footer {
   font-size: 12px;
   line-height: 1.9;
 }
+/* 진행 상태 배지: 진행 중 / 진행 완료 */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 9px;
+  font-weight: 650;
+}
+.status-badge i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status-badge.ongoing {
+  background: #e3f6f5;
+  color: var(--teal);
+}
+.status-badge.done {
+  background: #eef0f4;
+  color: #6b7486;
+}
 .stage-label {
   display: flex;
   justify-content: space-between;
@@ -1023,8 +1092,11 @@ dd {
   margin: 0;
   color: #596377;
 }
+/* 프로젝트 페이지 "함께 만들기" 버튼 */
 .featured-content .button {
   margin-top: 7px;
+  font-size: 14px;
+  padding: 14px 30px;
 }
 .projects-grid {
   display: grid;
@@ -1507,16 +1579,23 @@ input[type="checkbox"] {
   .brand {
     font-size: 21px;
   }
-  .brand img {
+  .brand .logo {
     width: 23px;
     height: 27px;
   }
-  .header-join {
+  .header-actions {
     margin-left: auto;
-    margin-right: 18px;
+    margin-right: 14px;
+    gap: 8px;
+  }
+  .header-join {
     font-size: 9px;
     padding: 7px 11px;
     gap: 6px;
+  }
+  .theme-toggle {
+    width: 32px;
+    height: 32px;
   }
   .menu-button {
     display: block;
@@ -1560,8 +1639,8 @@ input[type="checkbox"] {
     padding: 0;
   }
   .hero-kicker {
-    font-size: 7px;
-    letter-spacing: 1.3px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
   }
   .hero-copy h1 {
     font-size: 39px;
@@ -1570,28 +1649,29 @@ input[type="checkbox"] {
     line-height: 1.5;
   }
   .hero-copy > p {
-    font-size: 12px;
-    line-height: 1.95;
+    font-size: 14px;
+    line-height: 1.9;
   }
+  /* 모바일: 두 버튼이 한 줄을 반씩 나눠 채움 (너무 넓어지지 않게 최대 420px) */
   .hero-actions {
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 29px;
-    max-width: 360px;
-  }
-  .hero-actions .button {
+    display: grid;
     width: 100%;
-    justify-content: space-between;
-    padding: 12px 20px;
-  }
-  .hero-footnote {
-    font-size: 6px;
-    gap: 9px;
-    letter-spacing: 0.7px;
+    max-width: 420px;
     margin-top: 30px;
   }
+  .hero-actions .button {
+    padding: 14px 16px;
+    font-size: 14px;
+  }
+  .hero-footnote {
+    font-size: 9px;
+    gap: 10px;
+    letter-spacing: 1px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
   .scroll-hint {
-    font-size: 6px;
+    font-size: 9px;
     bottom: 21px;
   }
   .section {
@@ -1601,32 +1681,46 @@ input[type="checkbox"] {
     margin-bottom: 30px;
   }
   .section-title h2 {
-    font-size: 23px;
+    font-size: 24px;
     margin-top: 12px;
   }
   .section-title p {
-    font-size: 11px;
+    font-size: 14px;
     margin-top: 13px;
   }
   .eyebrow {
-    font-size: 8px;
-    padding: 4px 10px;
+    font-size: 10px;
+    padding: 4px 11px;
   }
+  /* 모바일: 한 줄에 하나씩, 아이콘 왼쪽 + 글은 오른쪽 (세로 길이 최소화) */
   .values-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px 20px;
-    margin-top: 35px;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 48px;
   }
+  .values-grid article {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    column-gap: 18px;
+    align-items: center;
+    text-align: left;
+  }
+  /* 아이콘을 키워드+설명 두 줄 높이에 맞춤 */
   .values-grid svg {
-    width: 29px;
-    margin-bottom: 14px;
+    grid-row: span 2;
+    align-self: center;
+    width: 46px;
+    height: 46px;
+    margin: 0;
   }
   .values-grid h3 {
-    font-size: 14px;
-    margin-bottom: 9px;
+    font-size: 17px;
+    margin-bottom: 3px;
   }
   .values-grid p {
-    font-size: 10px;
+    white-space: normal;
+    font-size: 13px;
+    line-height: 1.7;
   }
   .activity-card {
     display: grid;
@@ -1987,14 +2081,487 @@ input[type="checkbox"] {
     font-size: 10px;
   }
 }
+/* ---------- 히어로 진입 애니메이션 ---------- */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* 처음 들어올 때는 태그와 제목만 등장 (설명·버튼은 스크롤 장면에서 나타남) */
+.hero-kicker,
+.hero-copy h1 {
+  animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-kicker {
+  animation-delay: 0.05s;
+}
+.hero-copy h1 {
+  animation-delay: 0.15s;
+}
+.hero-art > * {
+  animation: fade-in-scale 1s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+}
+.hero-art > .floating-tag {
+  animation-name: fade-up;
+  animation-delay: 0.6s;
+}
+.hero-art > .tag-create {
+  animation-delay: 0.75s;
+}
+
+/* ---------- 스크롤 등장 애니메이션 ---------- */
+.reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
   }
   *,
   *:before,
   *:after {
     transition: none !important;
     animation: none !important;
+  }
+}
+
+/* =========================================================
+   다크 모드  (html[data-theme="dark"])
+   - 공통 색은 변수로, 흰 배경을 직접 쓴 곳은 개별로 덮어씀
+   ========================================================= */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0a0f1e;
+  --surface: #121a30;
+  --surface-2: #18223d;
+  --text: #e6ebf5;
+  --muted: #9aa5bb;
+  --line: #253049;
+  --soft: #0f1629;
+  --blue: #7b93ff;
+  --teal: #2cc2c7;
+  --logo-ink: #e8eefc; /* 로고의 남색 부분 → 밝게 */
+}
+[data-theme="dark"] body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* 로고 / 토글 아이콘 전환 */
+[data-theme="dark"] .theme-toggle .icon-moon {
+  display: none;
+}
+[data-theme="dark"] .theme-toggle .icon-sun {
+  display: block;
+}
+[data-theme="dark"] .theme-toggle,
+[data-theme="dark"] .menu-button {
+  color: var(--text);
+}
+
+/* 헤더 */
+[data-theme="dark"] .site-header {
+  background: #0a0f1ee6;
+}
+[data-theme="dark"] .navigation.open {
+  background: var(--soft);
+  box-shadow: 0 15px 20px #00000040;
+}
+
+/* 버튼: 다크에서는 밝은 버튼으로 반전 */
+[data-theme="dark"] .button,
+[data-theme="dark"] .button.white,
+[data-theme="dark"] .project-join .button {
+  background: var(--text);
+  border-color: var(--text);
+  color: #0d1838;
+}
+[data-theme="dark"] .button:hover {
+  background: #ffffff;
+  border-color: #ffffff;
+}
+[data-theme="dark"] .button.button-outline {
+  background: transparent;
+  border-color: var(--text);
+  color: var(--text);
+}
+[data-theme="dark"] .button.button-outline:hover {
+  background: #ffffff14;
+}
+
+/* 히어로 */
+[data-theme="dark"] .home-hero {
+  background: linear-gradient(114deg, #0a0f1e 15%, #0e1630 65%, #0b1d24 100%);
+}
+[data-theme="dark"] .hero-grid {
+  background-image:
+    linear-gradient(#ffffff0a 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff0a 1px, transparent 1px);
+}
+[data-theme="dark"] .hero-kicker {
+  color: #9fb0c6;
+}
+[data-theme="dark"] .hero-copy h1 > span:not(.title-period) {
+  color: var(--text);
+}
+[data-theme="dark"] .hero-copy strong {
+  color: #c9d3e6;
+}
+[data-theme="dark"] .hero-footnote,
+[data-theme="dark"] .art-number,
+[data-theme="dark"] .scroll-hint {
+  color: #8995ab;
+}
+[data-theme="dark"] .hero-footnote i {
+  background: #56627a;
+}
+[data-theme="dark"] .logo-disc {
+  background: linear-gradient(145deg, #ffffff14, #ffffff05);
+  box-shadow:
+    0 30px 80px #00000059,
+    inset 0 1px 2px #ffffff1f;
+}
+[data-theme="dark"] .orbit {
+  border-color: #9fb6d42e;
+}
+[data-theme="dark"] .orbit-one:before {
+  border-color: #123b40;
+  box-shadow: 0 0 0 5px #ffffff0d;
+}
+[data-theme="dark"] .floating-tag {
+  background: #151e36ee;
+  border-color: #ffffff14;
+  box-shadow: 0 12px 40px #00000059;
+  color: #b5c4d6;
+}
+
+/* 공통 섹션 */
+[data-theme="dark"] .eyebrow,
+[data-theme="dark"] .pill,
+[data-theme="dark"] .avatar {
+  background: #1c2852;
+  color: var(--blue);
+}
+[data-theme="dark"] .activity-card,
+[data-theme="dark"] .showcase-card,
+[data-theme="dark"] .project-card,
+[data-theme="dark"] .track-card,
+[data-theme="dark"] .stats > div,
+[data-theme="dark"] .recruit-info,
+[data-theme="dark"] .application-notice,
+[data-theme="dark"] .application-form,
+[data-theme="dark"] .form-success,
+[data-theme="dark"] .project-dialog {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--text);
+}
+[data-theme="dark"] .project-card:hover {
+  box-shadow: 0 12px 30px #00000059;
+}
+
+/* 메인: 결과물 / 마지막 CTA / 푸터 */
+[data-theme="dark"] .home-projects {
+  background: #0f1730;
+}
+[data-theme="dark"] .showcase-content small,
+[data-theme="dark"] .tags span {
+  background: #1d2742;
+  color: #a3adc2;
+}
+[data-theme="dark"] .archive-preview,
+[data-theme="dark"] .project-cover.light {
+  background: #1d2a55;
+  color: #dbe3ff;
+}
+[data-theme="dark"] .home-end {
+  background: var(--soft);
+}
+[data-theme="dark"] footer {
+  background: #060a16;
+}
+
+/* 서브 페이지 */
+[data-theme="dark"] .page-hero {
+  background: var(--soft);
+}
+[data-theme="dark"] .executive-cover,
+[data-theme="dark"] .project-cover.navy,
+[data-theme="dark"] .process-card.last {
+  background: #16204a;
+}
+[data-theme="dark"] .featured-art {
+  background: #121c3d;
+}
+[data-theme="dark"] .filters button {
+  background: var(--surface);
+  border-color: #2a3550;
+  color: #a3adc2;
+}
+[data-theme="dark"] .filters button.selected {
+  background: var(--text);
+  border-color: var(--text);
+  color: #0d1838;
+}
+[data-theme="dark"] .join-banner h2 {
+  color: var(--text);
+}
+[data-theme="dark"] .project-join {
+  background: transparent;
+  color: var(--text);
+  border-top-color: var(--line);
+}
+[data-theme="dark"] .pill.orange {
+  background: #3a2614;
+  color: #f0a46b;
+}
+[data-theme="dark"] .status-badge.ongoing {
+  background: #0f3336;
+}
+[data-theme="dark"] .status-badge.done {
+  background: #232b3f;
+  color: #a3adc2;
+}
+[data-theme="dark"] dt {
+  color: #8a95ab;
+}
+[data-theme="dark"] dd {
+  color: #c3cbdb;
+}
+
+/* 지원서 폼 */
+[data-theme="dark"] .form-field input,
+[data-theme="dark"] .form-field textarea {
+  background: #0b1122;
+  border-color: #2a3550;
+  color: var(--text);
+}
+[data-theme="dark"] .form-field input::placeholder,
+[data-theme="dark"] .form-field textarea::placeholder {
+  color: #66718a;
+}
+[data-theme="dark"] .track-choices label {
+  border-color: #2a3550;
+  color: #a3adc2;
+}
+[data-theme="dark"] .track-choices label:has(input:checked) {
+  background: #1c2852;
+  color: var(--blue);
+  border-color: var(--blue);
+}
+[data-theme="dark"] .consent {
+  color: #a3adc2;
+}
+
+/* =========================================================
+   메인 스크롤 연출
+   ========================================================= */
+
+/* ---------- 1. 히어로 스크롤 장면 ----------
+   히어로가 화면에 고정된 채로
+   ① 제목 단어가 하나씩 채워지고 → ② 설명·버튼이 나타난 뒤 → ③ 다음 섹션으로 넘어감
+   JS(HeroScene)가 --hero-progress(0→1), 단어별 --fill(0→1), --rest(0→1)를 넣어줌 */
+.hero-scene {
+  --hero-progress: 0;
+  --rest: 0;
+  position: relative;
+  height: 230vh; /* 길수록 천천히 진행 */
+  background: none;
+  overflow: visible; /* sticky가 동작하려면 바깥은 overflow를 막으면 안 됨 */
+}
+.hero-sticky {
+  position: sticky;
+  top: 84px; /* 헤더 높이 */
+  height: calc(100vh - 84px);
+  min-height: 560px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(114deg, #fafbff 15%, #f0f4fb 65%, #e9f3f5 100%);
+}
+[data-theme="dark"] .hero-sticky {
+  background: linear-gradient(114deg, #0a0f1e 15%, #0e1630 65%, #0b1d24 100%);
+}
+.hero-sticky > .hero-inner {
+  width: 100%;
+  min-height: 0;
+}
+
+/* 제목 단어: 흐린 상태 → 스크롤하면 진하게 채워짐 */
+.hero-word {
+  --fill: 0;
+  display: inline-block;
+  opacity: calc(0.14 + var(--fill) * 0.86);
+  translate: 0 calc((1 - var(--fill)) * 12px);
+  filter: blur(calc((1 - var(--fill)) * 2px));
+}
+
+/* 설명·버튼·태그: 제목이 다 채워질 즈음 아래에서 올라옴 */
+.hero-copy > p,
+.hero-actions,
+.hero-footnote {
+  opacity: var(--rest);
+  translate: 0 calc((1 - var(--rest)) * 26px);
+}
+/* 아직 안 보일 때는 클릭되지 않게 */
+.hero-scene:not(.rest-shown) .hero-actions {
+  pointer-events: none;
+}
+
+/* 오른쪽 로고: 스크롤에 따라 회전 */
+.hero-art .logo-disc {
+  rotate: calc(var(--hero-progress) * 40deg);
+}
+.hero-art .orbit-one {
+  rotate: calc(var(--hero-progress) * -60deg);
+}
+.hero-art .orbit-two {
+  rotate: calc(var(--hero-progress) * 45deg);
+}
+.hero-scene .scroll-hint {
+  opacity: calc(1 - var(--hero-progress) * 6);
+}
+
+
+/* ---------- 3. 섹션 제목: 태그 → 제목 → 설명 순서로 흐림이 걷히며 등장 ---------- */
+.reveal-ready [data-reveal="title"],
+.reveal-ready [data-reveal="lines"] {
+  opacity: 1;
+  transform: none;
+}
+.reveal-ready [data-reveal="title"] :is(.eyebrow, h2, p, .text-link) {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(8px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-ready [data-reveal="title"] h2 {
+  transition-delay: 0.1s;
+}
+.reveal-ready [data-reveal="title"] p {
+  transition-delay: 0.22s;
+}
+.reveal-ready [data-reveal="title"] .text-link {
+  transition-delay: 0.32s;
+}
+.reveal-ready
+  [data-reveal="title"].is-visible
+  :is(.eyebrow, h2, p, .text-link) {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ---------- 4. 마지막 CTA: 줄마다 마스크 안에서 밀려 올라옴 ---------- */
+.reveal-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+.reveal-line > span {
+  display: block;
+}
+.reveal-ready [data-reveal="lines"] .reveal-line > span {
+  transform: translateY(110%);
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-ready [data-reveal="lines"] .reveal-line:nth-child(2) > span {
+  transition-delay: 0.12s;
+}
+.reveal-ready [data-reveal="lines"] > :is(.eyebrow, .button) {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-ready [data-reveal="lines"] > .button {
+  transition-delay: 0.35s;
+}
+.reveal-ready [data-reveal="lines"].is-visible .reveal-line > span,
+.reveal-ready [data-reveal="lines"].is-visible > :is(.eyebrow, .button) {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 767px) {
+  .hero-scene {
+    height: 200vh;
+  }
+  .hero-sticky {
+    top: 70px;
+    height: calc(100vh - 70px);
+    min-height: 520px;
+  }
+  .hero-sticky > .hero-inner {
+    padding-top: 0;
+    padding-bottom: 40px;
+  }
+}
+
+/* 모션 줄이기: 스크롤 장면 끄고 처음부터 다 보여주기 */
+@media (prefers-reduced-motion: reduce) {
+  .hero-scene {
+    height: auto;
+  }
+  .hero-sticky {
+    position: relative;
+    top: 0;
+    height: auto;
+    min-height: 650px;
+  }
+  .hero-word,
+  .hero-copy > p,
+  .hero-actions,
+  .hero-footnote {
+    opacity: 1;
+    translate: none;
+    filter: none;
+  }
+  .hero-actions {
+    pointer-events: auto;
+  }
+  .hero-art .logo-disc,
+  .hero-art .orbit-one,
+  .hero-art .orbit-two {
+    rotate: none;
+  }
+  .reveal-ready [data-reveal] :is(.eyebrow, h2, p, .text-link, .button),
+  .reveal-ready [data-reveal] .reveal-line > span {
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 }

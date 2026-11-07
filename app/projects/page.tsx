@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { PageHero, JoinBanner } from "@/components/ui";
-import Projects, { Progress } from "@/components/projects";
+import Projects, { StatusBadge } from "@/components/projects";
 import { ArrowUpRight } from "lucide-react";
+import type { ProjectStatus } from "@/lib/data";
 export const metadata = { title: "프로젝트" };
+
+// "진행 중" | "진행 완료"
+const featuredStatus: ProjectStatus = "진행 중";
+
 export default function ProjectsPage() {
   return (
     <>
@@ -10,12 +15,12 @@ export default function ProjectsPage() {
         breadcrumb="Projects"
         tag="NOW IN PROGRESS"
         title="지금 만들고 있는 것들"
-        description="서로 다른 아이디어가 하나의 결과물이 되기까지. 진행 단계와 참여 멤버를 살펴보고, 함께할 프로젝트를 찾아보세요."
+        description="서로 다른 아이디어가 하나의 결과물이 되기까지. 진행 상태와 참여 멤버를 살펴보고, 함께할 프로젝트를 찾아보세요."
       />
       <section className="section">
         <div className="container">
           <p className="sample-note">
-            프로젝트 내용, 진행 단계와 참여 인원은 디자인 확인용 예시입니다.
+            프로젝트 내용, 진행 상태와 참여 인원은 디자인 확인용 예시입니다.
           </p>
           <article className="featured-project">
             <div className="featured-art">
@@ -33,6 +38,7 @@ export default function ProjectsPage() {
             <div className="featured-content">
               <div className="flex gap-2">
                 <span className="pill">미디어아트</span>
+                <StatusBadge status={featuredStatus} />
                 <span className="pill orange">팀원 모집 중</span>
               </div>
               <h2>빛의 정원 — 인터랙티브 미디어아트 전시</h2>
@@ -40,17 +46,6 @@ export default function ProjectsPage() {
                 관람객의 움직임에 반응해 빛과 소리가 피어나는 공간형 전시입니다.
                 함께 새로운 감각을 만들어 갑니다.
               </p>
-              <div className="stage-label">
-                <span>
-                  진행 단계 · <strong>제작</strong>
-                </span>
-              </div>
-              <Progress stage={3} />
-              <div className="stage-names">
-                {["기획", "디자인", "제작", "테스트", "공개"].map((s) => (
-                  <span key={s}>{s}</span>
-                ))}
-              </div>
               <dl>
                 <div>
                   <dt>사용 도구</dt>
@@ -62,7 +57,7 @@ export default function ProjectsPage() {
                 </div>
               </dl>
               <Link className="button" href="/apply">
-                함께 만들기 <ArrowUpRight size={17} />
+                함께 만들기
               </Link>
             </div>
           </article>

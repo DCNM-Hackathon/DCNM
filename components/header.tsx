@@ -1,8 +1,10 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import ThemeToggle from "@/components/theme-toggle";
+import Logo from "@/components/logo";
 const links = [
   ["Home", "/"],
   ["About", "/#about"],
@@ -13,11 +15,28 @@ const links = [
 export default function Header() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
+  const [hash, setHash] = useState("");
+
+  useEffect(() => {
+    const syncHash = () => setHash(window.location.hash);
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    window.addEventListener("popstate", syncHash);
+    return () => {
+      window.removeEventListener("hashchange", syncHash);
+      window.removeEventListener("popstate", syncHash);
+    };
+  }, [path]);
+
+  const activeHref =
+    path === "/" && ["#about", "#activities"].includes(hash)
+      ? `${path}${hash}`
+      : path;
   return (
     <header className="site-header">
       <div className="container header-inner">
         <Link href="/" aria-label="DC&M 홈" className="brand">
-          <img src="/images/logo.svg" alt="" width="28" height="32" />
+          <Logo width={28} height={32} gradientId="logo-header" />
           <span>
             DC&M
           </span>
@@ -30,16 +49,29 @@ export default function Header() {
             <Link
               key={label}
               href={href}
-              onClick={() => setOpen(false)}
-              className={path === href ? "active" : ""}
+              onClick={() => {
+                setOpen(false);
+                setHash(href.includes("#") ? `#${href.split("#")[1]}` : "");
+              }}
+              className={activeHref === href ? "active" : ""}
+              aria-current={
+                activeHref === href
+                  ? href.includes("#")
+                    ? "location"
+                    : "page"
+                  : undefined
+              }
             >
               {label}
             </Link>
           ))}
         </nav>
-        <Link href="/apply" className="button header-join">
-          JOIN US <ArrowUpRight size={14} />
-        </Link>
+        <div className="header-actions">
+          <ThemeToggle />
+          <Link href="/apply" className="button header-join">
+            JOIN US
+          </Link>
+        </div>
         <button
           className="menu-button"
           aria-label={open ? "메뉴 닫기" : "메뉴 열기"}

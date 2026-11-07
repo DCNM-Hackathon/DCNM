@@ -6,13 +6,19 @@ export const metadata: Metadata = {
   description:
     "Digital Contents & Multimedia. 디자인, 영상, 개발, 3D로 아이디어를 현실로 만드는 동아리 DC&M입니다.",
 };
+// 저장된 선택 → 없으면 기기(시스템) 설정 순으로 테마 결정
+const themeScript = `(function(){try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}})();`;
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
+      <head>
+        {/* 화면이 그려지기 전에 테마를 적용해 깜빡임 방지 */}
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <a className="skip-link" href="#main">
           본문으로 바로가기

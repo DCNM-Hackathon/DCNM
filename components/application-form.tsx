@@ -1,8 +1,20 @@
 "use client";
 import { useState } from "react";
-import { CheckCircle2, LoaderCircle, ArrowRight } from "lucide-react";
+import {
+  CheckCircle2,
+  LoaderCircle,
+  ArrowRight,
+  Download,
+  Paperclip,
+} from "lucide-react";
 import { applicationSchema } from "@/lib/application";
 import { tracks } from "@/lib/data";
+import {
+  validateAttachmentMeta,
+  ALLOWED_ATTACHMENT_EXTENSIONS,
+  MAX_ATTACHMENT_SIZE,
+} from "@/lib/attachment";
+const TEMPLATE_URL = "/downloads/DCM_지원서양식.doc";
 export default function ApplicationForm() {
   const [errors, setErrors] = useState<Record<string, string[] | undefined>>(
     {},
@@ -11,6 +23,7 @@ export default function ApplicationForm() {
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState(false);
   const [length, setLength] = useState(0);
+  const [fileName, setFileName] = useState("");
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (pending) return;
@@ -22,20 +35,30 @@ export default function ApplicationForm() {
       consent: data.get("consent") === "on",
     };
     const parsed = applicationSchema.safeParse(payload);
-    if (!parsed.success) {
-      setErrors(parsed.error.flatten().fieldErrors);
-      const first = parsed.error.issues[0]?.path[0];
-      (form.elements.namedItem(String(first)) as HTMLElement)?.focus?.();
+    const file = data.get("attachment");
+    const attachmentError =
+      file instanceof File
+        ? validateAttachmentMeta({ name: file.name, size: file.size })
+        : "첨부파일을 선택해 주세요.";
+    const fieldErrors = parsed.success
+      ? {}
+      : parsed.error.flatten().fieldErrors;
+    if (!parsed.success || attachmentError) {
+      setErrors({ ...fieldErrors, attachment: attachmentError ? [attachmentError] : undefined });
+      const first = !parsed.success
+        ? String(parsed.error.issues[0]?.path[0])
+        : "attachment";
+      (form.elements.namedItem(first) as HTMLElement)?.focus?.();
       setStatus("입력 내용을 확인해 주세요.");
       return;
     }
     setErrors({});
     setPending(true);
     try {
+      setStatus("접수 중...");
       const res = await fetch("/api/apply", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(parsed.data),
+        body: data,
       });
       const result = await res.json();
       if (!res.ok) {
@@ -165,6 +188,43 @@ export default function ApplicationForm() {
             <small className="field-error">{errors.portfolio[0]}</small>
           )}
         </div>
+        <div className="form-field">
+          <label htmlFor="attachment">
+            지원서 첨부파일 <span>*</span>
+          </label>
+          <a className="text-link" href={TEMPLATE_URL} download>
+            <Download size={15} /> 지원서 양식 다운로드
+          </a>
+          <small>
+            위 양식을 다운로드해 작성한 뒤, 완성된 파일을 아래에 첨부해
+            주세요. ({ALLOWED_ATTACHMENT_EXTENSIONS.join(", ")}, 최대{" "}
+            {MAX_ATTACHMENT_SIZE / 1024 / 1024}MB)
+          </small>
+          <input
+            id="attachment"
+            name="attachment"
+            type="file"
+            accept={ALLOWED_ATTACHMENT_EXTENSIONS.map((e) => `.${e}`).join(
+              ",",
+            )}
+            required
+            aria-invalid={!!errors.attachment}
+            aria-describedby={
+              errors.attachment ? "attachment-error" : undefined
+            }
+            onChange={(e) => setFileName(e.target.files?.[0]?.name || "")}
+          />
+          {fileName && (
+            <small className="file-selected">
+              <Paperclip size={14} /> {fileName}
+            </small>
+          )}
+          {errors.attachment && (
+            <small className="field-error" id="attachment-error">
+              {errors.attachment[0]}
+            </small>
+          )}
+        </div>
         <div className="honeypot" aria-hidden="true">
           <label>
             Website
@@ -176,8 +236,8 @@ export default function ApplicationForm() {
           <span>
             개인정보 수집 및 이용에 동의합니다.
             <small>
-              이름, 학번, 학과, 연락처, 이메일, 지원 내용은 선발 목적으로만
-              사용되며 모집 종료 후 파기됩니다.
+              이름, 학번, 학과, 연락처, 이메일, 지원 내용, 첨부파일은 선발
+              목적으로만 사용되며 모집 종료 후 파기됩니다.
             </small>
           </span>
         </label>
@@ -190,7 +250,7 @@ export default function ApplicationForm() {
           {pending ? (
             <>
               <LoaderCircle className="animate-spin" size={18} />
-              접수 중...
+              {status || "접수 중..."}
             </>
           ) : (
             <>
@@ -198,7 +258,7 @@ export default function ApplicationForm() {
             </>
           )}
         </button>
-        {status && (
+        {status && !pending && (
           <p className="form-message" role="alert">
             {status}
           </p>

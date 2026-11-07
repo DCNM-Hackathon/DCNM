@@ -124,7 +124,7 @@ export default function ApplyPage() {
               "다른 파트 스터디 참여와 협업이 가능합니다. 파트 변경은 운영진과 상의해 주세요.",
             ],
           ].map(([q, a], i) => (
-            <details className="faq" key={q} open={i === 0}>
+            <details className="faq" key={q} >
               <summary>
                 <span>
                   <b>Q.</b> {q}

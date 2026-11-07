@@ -3,6 +3,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import ThemeToggle from "@/components/theme-toggle";
+import Logo from "@/components/logo";
 const links = [
   ["Home", "/"],
   ["About", "/#about"],
@@ -34,7 +36,7 @@ export default function Header() {
     <header className="site-header">
       <div className="container header-inner">
         <Link href="/" aria-label="DC&M 홈" className="brand">
-          <img src="/images/logo.svg" alt="" width="28" height="32" />
+          <Logo width={28} height={32} gradientId="logo-header" />
           <span>
             DC&M
           </span>
@@ -64,9 +66,12 @@ export default function Header() {
             </Link>
           ))}
         </nav>
-        <Link href="/apply" className="button header-join">
-          JOIN US
-        </Link>
+        <div className="header-actions">
+          <ThemeToggle />
+          <Link href="/apply" className="button header-join">
+            JOIN US
+          </Link>
+        </div>
         <button
           className="menu-button"
           aria-label={open ? "메뉴 닫기" : "메뉴 열기"}

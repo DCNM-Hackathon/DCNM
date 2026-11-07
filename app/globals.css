@@ -296,7 +296,7 @@ small {
   align-items: center;
   gap: 12px;
   margin-top: 42px;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 1.15px;
   color: #7e8c9d;
   font-weight: 500;
@@ -391,7 +391,7 @@ small {
   position: absolute;
   bottom: 0;
   color: #8c9eae;
-  font-size: 8px;
+  font-size: 14px;
   letter-spacing: 2px;
 }
 .scroll-hint {

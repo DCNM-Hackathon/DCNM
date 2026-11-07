@@ -96,10 +96,10 @@ export default function Home() {
                   지원하기
                 </Link>
               </div>
-              <div className="hero-footnote">
+              {/* <div className="hero-footnote">
                 <span>DESIGN</span>
                 <i /> VIDEO <i /> DEVELOPMENT <i /> 3D
-              </div>
+              </div> */}
             </div>
             <div className="hero-art" aria-label="DC&M 동아리 로고">
               <div className="orbit orbit-one" />

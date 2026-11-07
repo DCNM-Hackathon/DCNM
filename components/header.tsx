@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 const links = [
   ["Home", "/"],
@@ -13,6 +13,23 @@ const links = [
 export default function Header() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
+  const [hash, setHash] = useState("");
+
+  useEffect(() => {
+    const syncHash = () => setHash(window.location.hash);
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+    window.addEventListener("popstate", syncHash);
+    return () => {
+      window.removeEventListener("hashchange", syncHash);
+      window.removeEventListener("popstate", syncHash);
+    };
+  }, [path]);
+
+  const activeHref =
+    path === "/" && ["#about", "#activities"].includes(hash)
+      ? `${path}${hash}`
+      : path;
   return (
     <header className="site-header">
       <div className="container header-inner">
@@ -30,8 +47,18 @@ export default function Header() {
             <Link
               key={label}
               href={href}
-              onClick={() => setOpen(false)}
-              className={path === href ? "active" : ""}
+              onClick={() => {
+                setOpen(false);
+                setHash(href.includes("#") ? `#${href.split("#")[1]}` : "");
+              }}
+              className={activeHref === href ? "active" : ""}
+              aria-current={
+                activeHref === href
+                  ? href.includes("#")
+                    ? "location"
+                    : "page"
+                  : undefined
+              }
             >
               {label}
             </Link>

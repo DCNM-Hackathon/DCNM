@@ -869,11 +869,12 @@ footer {
 }
 .join-banner {
   padding: 60px 0;
-  background: var(--navy);
+  /* background: var(--navy); */
   color: white;
 }
 .join-banner h2 {
   font-size: 27px;
+  color: var(--navy);
   margin-bottom: 9px;
 }
 .join-banner p {

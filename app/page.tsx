@@ -8,7 +8,13 @@ import {
   Trophy,
   ArrowUpRight,
 } from "lucide-react";
+import type { CSSProperties } from "react";
 import { SectionTitle } from "@/components/ui";
+import ScrollReveal from "@/components/ScrollReveal";
+
+// 카드가 순서대로 하나씩 올라오도록 지연 시간 지정
+const delay = (i: number) =>
+  ({ "--reveal-delay": `${i * 110}ms` }) as CSSProperties;
 const values = [
   {
     icon: Users,
@@ -54,6 +60,7 @@ const activities = [
 export default function Home() {
   return (
     <>
+      <ScrollReveal />
       <section className="home-hero">
         <div className="hero-grid" />
         <div className="container hero-inner">
@@ -74,10 +81,10 @@ export default function Home() {
             </p>
             <div className="hero-actions">
               <Link href="#about" className="button">
-                동아리 소개 <ArrowDown size={16} />
+                동아리 소개
               </Link>
-              <Link href="/apply" className="button outline">
-                지원하기 <ArrowUpRight size={16} />
+              <Link href="/apply" className="button button-outline">
+                지원하기
               </Link>
             </div>
             <div className="hero-footnote">
@@ -112,14 +119,16 @@ export default function Home() {
       </section>
       <section id="about" className="section">
         <div className="container">
-          <SectionTitle
-            tag="ABOUT US"
-            title="서로 다른 우리가, 함께 만드는 내일"
-            description="다양한 기술을 학습하고 실제 프로젝트를 통해 성장합니다. 누구나 자유롭게 아이디어를 제안하고, 함께 만들어 갑니다."
-          />
+          <div data-reveal>
+            <SectionTitle
+              tag="ABOUT US"
+              title="서로 다른 우리가, 함께 만드는 내일"
+              description="다양한 기술을 학습하고 실제 프로젝트를 통해 성장합니다. 누구나 자유롭게 아이디어를 제안하고, 함께 만들어 갑니다."
+            />
+          </div>
           <div className="values-grid">
-            {values.map((v) => (
-              <article key={v.title}>
+            {values.map((v, i) => (
+              <article key={v.title} data-reveal style={delay(i)}>
                 <v.icon size={36} strokeWidth={1.5} />
                 <h3>{v.title}</h3>
                 <p>{v.text}</p>
@@ -130,14 +139,21 @@ export default function Home() {
       </section>
       <section id="activities" className="section soft-bg">
         <div className="container">
-          <SectionTitle
-            tag="OUR ACTIVITIES"
-            title="배움을 넘어, 경험으로"
-            description="작은 호기심이 새로운 도전이 되는 곳. 우리는 이렇게 함께합니다."
-          />
+          <div data-reveal>
+            <SectionTitle
+              tag="OUR ACTIVITIES"
+              title="배움을 넘어, 경험으로"
+              description="작은 호기심이 새로운 도전이 되는 곳. 우리는 이렇게 함께합니다."
+            />
+          </div>
           <div className="grid gap-6 md:grid-cols-3">
             {activities.map((a, i) => (
-              <article className="activity-card" key={a.title}>
+              <article
+                className="activity-card"
+                key={a.title}
+                data-reveal
+                style={delay(i)}
+              >
                 <div
                   className="activity-image"
                   style={{
@@ -158,7 +174,7 @@ export default function Home() {
       </section>
       <section className="section home-projects">
         <div className="container">
-          <div className="section-heading-row">
+          <div className="section-heading-row" data-reveal>
             <div>
               <span className="eyebrow">MADE BY DC&M</span>
               <h2>우리가 만든 결과물</h2>
@@ -191,25 +207,27 @@ export default function Home() {
                 desc: "익숙한 캠퍼스에서 시작되는 색다른 모험",
                 tech: "Unity · Aseprite",
               },
-            ].map((p) => (
-              <Link href="/projects" className="showcase-card" key={p.name}>
-                <div className={`showcase-image ${p.class}`}>
-                  <small>{p.label}</small>
-                  <strong>
-                    {p.name === "Lumen VR"
-                      ? "LUMEN"
-                      : p.name === "Pixel Runner"
-                        ? "PIXEL\nRUNNER"
-                        : "DC&M\nARCHIVE"}
-                  </strong>
-                  <ArrowUpRight size={25} />
-                </div>
-                <div className="showcase-content">
-                  <h3>{p.name}</h3>
-                  <p>{p.desc}</p>
-                  <small>{p.tech}</small>
-                </div>
-              </Link>
+            ].map((p, i) => (
+              <div key={p.name} data-reveal style={delay(i)}>
+                <Link href="/projects" className="showcase-card">
+                  <div className={`showcase-image ${p.class}`}>
+                    <small>{p.label}</small>
+                    <strong>
+                      {p.name === "Lumen VR"
+                        ? "LUMEN"
+                        : p.name === "Pixel Runner"
+                          ? "PIXEL\nRUNNER"
+                          : "DC&M\nARCHIVE"}
+                    </strong>
+                    <ArrowUpRight size={25} />
+                  </div>
+                  <div className="showcase-content">
+                    <h3>{p.name}</h3>
+                    <p>{p.desc}</p>
+                    <small>{p.tech}</small>
+                  </div>
+                </Link>
+              </div>
             ))}
           </div>
           <p className="demo-caption">
@@ -218,7 +236,7 @@ export default function Home() {
         </div>
       </section>
       <section className="home-end">
-        <div className="container">
+        <div className="container" data-reveal>
           <span className="eyebrow">YOUR NEXT CHAPTER</span>
           <h2>
             당신의 가능성도

@@ -38,7 +38,7 @@ export default function Header() {
           ))}
         </nav>
         <Link href="/apply" className="button header-join">
-          JOIN US <ArrowUpRight size={14} />
+          JOIN US
         </Link>
         <button
           className="menu-button"

@@ -11,6 +11,7 @@ import {
 import type { CSSProperties } from "react";
 import { SectionTitle } from "@/components/ui";
 import ScrollReveal from "@/components/ScrollReveal";
+import Logo from "@/components/logo";
 
 // 카드가 순서대로 하나씩 올라오도록 지연 시간 지정
 const delay = (i: number) =>
@@ -96,11 +97,11 @@ export default function Home() {
             <div className="orbit orbit-one" />
             <div className="orbit orbit-two" />
             <div className="logo-disc">
-              <img
-                src="/images/logo.svg"
-                alt="DC&M 로고"
-                width="260"
-                height="290"
+              <Logo
+                width={260}
+                height={290}
+                label="DC&M 로고"
+                gradientId="logo-hero"
               />
             </div>
             <div className="floating-tag tag-code">

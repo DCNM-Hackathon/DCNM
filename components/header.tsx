@@ -19,7 +19,7 @@ export default function Header() {
         <Link href="/" aria-label="DC&M 홈" className="brand">
           <img src="/images/logo.svg" alt="" width="28" height="32" />
           <span>
-            DC&M<span className="brand-dot">.</span>
+            DC&M
           </span>
         </Link>
         <nav
@@ -38,7 +38,7 @@ export default function Header() {
           ))}
         </nav>
         <Link href="/apply" className="button header-join">
-          JOIN US <ArrowUpRight size={14} />
+          JOIN US
         </Link>
         <button
           className="menu-button"

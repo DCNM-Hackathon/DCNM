@@ -2088,23 +2088,16 @@ input[type="checkbox"] {
     transform: none;
   }
 }
-.hero-copy > * {
+/* 처음 들어올 때는 태그와 제목만 등장 (설명·버튼은 스크롤 장면에서 나타남) */
+.hero-kicker,
+.hero-copy h1 {
   animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.hero-copy > :nth-child(1) {
+.hero-kicker {
   animation-delay: 0.05s;
 }
-.hero-copy > :nth-child(2) {
+.hero-copy h1 {
   animation-delay: 0.15s;
-}
-.hero-copy > :nth-child(3) {
-  animation-delay: 0.27s;
-}
-.hero-copy > :nth-child(4) {
-  animation-delay: 0.39s;
-}
-.hero-copy > :nth-child(5) {
-  animation-delay: 0.5s;
 }
 .hero-art > * {
   animation: fade-in-scale 1s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
@@ -2373,4 +2366,206 @@ input[type="checkbox"] {
 }
 [data-theme="dark"] .consent {
   color: #a3adc2;
+}
+
+/* =========================================================
+   메인 스크롤 연출
+   ========================================================= */
+
+/* ---------- 1. 히어로 스크롤 장면 ----------
+   히어로가 화면에 고정된 채로
+   ① 제목 단어가 하나씩 채워지고 → ② 설명·버튼이 나타난 뒤 → ③ 다음 섹션으로 넘어감
+   JS(HeroScene)가 --hero-progress(0→1), 단어별 --fill(0→1), --rest(0→1)를 넣어줌 */
+.hero-scene {
+  --hero-progress: 0;
+  --rest: 0;
+  position: relative;
+  height: 230vh; /* 길수록 천천히 진행 */
+  background: none;
+  overflow: visible; /* sticky가 동작하려면 바깥은 overflow를 막으면 안 됨 */
+}
+.hero-sticky {
+  position: sticky;
+  top: 84px; /* 헤더 높이 */
+  height: calc(100vh - 84px);
+  min-height: 560px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(114deg, #fafbff 15%, #f0f4fb 65%, #e9f3f5 100%);
+}
+[data-theme="dark"] .hero-sticky {
+  background: linear-gradient(114deg, #0a0f1e 15%, #0e1630 65%, #0b1d24 100%);
+}
+.hero-sticky > .hero-inner {
+  width: 100%;
+  min-height: 0;
+}
+
+/* 제목 단어: 흐린 상태 → 스크롤하면 진하게 채워짐 */
+.hero-word {
+  --fill: 0;
+  display: inline-block;
+  opacity: calc(0.14 + var(--fill) * 0.86);
+  translate: 0 calc((1 - var(--fill)) * 12px);
+  filter: blur(calc((1 - var(--fill)) * 2px));
+}
+
+/* 설명·버튼·태그: 제목이 다 채워질 즈음 아래에서 올라옴 */
+.hero-copy > p,
+.hero-actions,
+.hero-footnote {
+  opacity: var(--rest);
+  translate: 0 calc((1 - var(--rest)) * 26px);
+}
+/* 아직 안 보일 때는 클릭되지 않게 */
+.hero-scene:not(.rest-shown) .hero-actions {
+  pointer-events: none;
+}
+
+/* 오른쪽 로고: 스크롤에 따라 회전 */
+.hero-art .logo-disc {
+  rotate: calc(var(--hero-progress) * 40deg);
+}
+.hero-art .orbit-one {
+  rotate: calc(var(--hero-progress) * -60deg);
+}
+.hero-art .orbit-two {
+  rotate: calc(var(--hero-progress) * 45deg);
+}
+.hero-scene .scroll-hint {
+  opacity: calc(1 - var(--hero-progress) * 6);
+}
+
+/* 진행 바 */
+.hero-progress-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--line);
+}
+.hero-progress-bar > div {
+  height: 100%;
+  background: var(--teal);
+  transform: scaleX(var(--hero-progress));
+  transform-origin: left;
+}
+
+/* ---------- 3. 섹션 제목: 태그 → 제목 → 설명 순서로 흐림이 걷히며 등장 ---------- */
+.reveal-ready [data-reveal="title"],
+.reveal-ready [data-reveal="lines"] {
+  opacity: 1;
+  transform: none;
+}
+.reveal-ready [data-reveal="title"] :is(.eyebrow, h2, p, .text-link) {
+  opacity: 0;
+  transform: translateY(28px);
+  filter: blur(8px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-ready [data-reveal="title"] h2 {
+  transition-delay: 0.1s;
+}
+.reveal-ready [data-reveal="title"] p {
+  transition-delay: 0.22s;
+}
+.reveal-ready [data-reveal="title"] .text-link {
+  transition-delay: 0.32s;
+}
+.reveal-ready
+  [data-reveal="title"].is-visible
+  :is(.eyebrow, h2, p, .text-link) {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* ---------- 4. 마지막 CTA: 줄마다 마스크 안에서 밀려 올라옴 ---------- */
+.reveal-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+.reveal-line > span {
+  display: block;
+}
+.reveal-ready [data-reveal="lines"] .reveal-line > span {
+  transform: translateY(110%);
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-ready [data-reveal="lines"] .reveal-line:nth-child(2) > span {
+  transition-delay: 0.12s;
+}
+.reveal-ready [data-reveal="lines"] > :is(.eyebrow, .button) {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-ready [data-reveal="lines"] > .button {
+  transition-delay: 0.35s;
+}
+.reveal-ready [data-reveal="lines"].is-visible .reveal-line > span,
+.reveal-ready [data-reveal="lines"].is-visible > :is(.eyebrow, .button) {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 767px) {
+  .hero-scene {
+    height: 200vh;
+  }
+  .hero-sticky {
+    top: 70px;
+    height: calc(100vh - 70px);
+    min-height: 520px;
+  }
+  .hero-sticky > .hero-inner {
+    padding-top: 0;
+    padding-bottom: 40px;
+  }
+}
+
+/* 모션 줄이기: 스크롤 장면 끄고 처음부터 다 보여주기 */
+@media (prefers-reduced-motion: reduce) {
+  .hero-scene {
+    height: auto;
+  }
+  .hero-sticky {
+    position: relative;
+    top: 0;
+    height: auto;
+    min-height: 650px;
+  }
+  .hero-word,
+  .hero-copy > p,
+  .hero-actions,
+  .hero-footnote {
+    opacity: 1;
+    translate: none;
+    filter: none;
+  }
+  .hero-actions {
+    pointer-events: auto;
+  }
+  .hero-art .logo-disc,
+  .hero-art .orbit-one,
+  .hero-art .orbit-two {
+    rotate: none;
+  }
+  .hero-progress-bar {
+    display: none;
+  }
+  .reveal-ready [data-reveal] :is(.eyebrow, h2, p, .text-link, .button),
+  .reveal-ready [data-reveal] .reveal-line > span {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
 }

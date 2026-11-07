@@ -12,6 +12,7 @@ import type { CSSProperties } from "react";
 import { SectionTitle } from "@/components/ui";
 import ScrollReveal from "@/components/ScrollReveal";
 import Logo from "@/components/logo";
+import { HeroScene } from "@/components/scroll-scenes";
 
 // 카드가 순서대로 하나씩 올라오도록 지연 시간 지정
 const delay = (i: number) =>
@@ -62,65 +63,76 @@ export default function Home() {
   return (
     <>
       <ScrollReveal />
-      <section className="home-hero">
-        <div className="hero-grid" />
-        <div className="container hero-inner">
-          <div className="hero-copy">
-            <span className="hero-kicker">
-              <span /> DIGITAL CONTENTS & MULTIMEDIA
-            </span>
-            <h1>
-              함께 만들고,
-              <br />
-              가능성을 <span>구현하다</span>
-              <span className="title-period">.</span>
-            </h1>
-            <p>
-              다양한 시선, 하나의 가능성.
-              <br />
-              아이디어를 현실로 만드는 동아리 <strong>DC&M</strong>입니다.
-            </p>
-            <div className="hero-actions">
-              <Link href="#about" className="button">
-                동아리 소개
-              </Link>
-              <Link href="/apply" className="button button-outline">
-                지원하기
-              </Link>
+      <HeroScene />
+      {/* 히어로 스크롤 장면: 섹션이 길고, 안쪽 .hero-sticky 가 화면에 고정됨 */}
+      <section className="home-hero hero-scene">
+        <div className="hero-sticky">
+          <div className="hero-grid" />
+          <div className="container hero-inner">
+            <div className="hero-copy">
+              <span className="hero-kicker">
+                <span /> DIGITAL CONTENTS & MULTIMEDIA
+              </span>
+              {/* 단어마다 .hero-word → 스크롤하면 하나씩 채워짐 */}
+              <h1>
+                <span className="hero-word">함께</span>{" "}
+                <span className="hero-word">만들고,</span>
+                <br />
+                <span className="hero-word">가능성을</span>{" "}
+                <span className="hero-word">
+                  구현하다<span className="title-period">.</span>
+                </span>
+              </h1>
+              <p>
+                다양한 시선, 하나의 가능성.
+                <br />
+                아이디어를 현실로 만드는 동아리 <strong>DC&M</strong>입니다.
+              </p>
+              <div className="hero-actions">
+                <Link href="#about" className="button">
+                  동아리 소개
+                </Link>
+                <Link href="/apply" className="button button-outline">
+                  지원하기
+                </Link>
+              </div>
+              <div className="hero-footnote">
+                <span>DESIGN</span>
+                <i /> VIDEO <i /> DEVELOPMENT <i /> 3D
+              </div>
             </div>
-            <div className="hero-footnote">
-              <span>DESIGN</span>
-              <i /> VIDEO <i /> DEVELOPMENT <i /> 3D
+            <div className="hero-art" aria-label="DC&M 동아리 로고">
+              <div className="orbit orbit-one" />
+              <div className="orbit orbit-two" />
+              <div className="logo-disc">
+                <Logo
+                  width={260}
+                  height={290}
+                  label="DC&M 로고"
+                  gradientId="logo-hero"
+                />
+              </div>
+              <div className="floating-tag tag-code">
+                <Code2 size={23} />
+                <span>IDEA TO REALITY</span>
+              </div>
+              <div className="floating-tag tag-create">
+                <span className="teal-dot" /> LET’S CREATE TOGETHER
+              </div>
+              <span className="art-number">01 / INFINITE POSSIBILITIES</span>
             </div>
           </div>
-          <div className="hero-art" aria-label="DC&M 동아리 로고">
-            <div className="orbit orbit-one" />
-            <div className="orbit orbit-two" />
-            <div className="logo-disc">
-              <Logo
-                width={260}
-                height={290}
-                label="DC&M 로고"
-                gradientId="logo-hero"
-              />
-            </div>
-            <div className="floating-tag tag-code">
-              <Code2 size={23} />
-              <span>IDEA TO REALITY</span>
-            </div>
-            <div className="floating-tag tag-create">
-              <span className="teal-dot" /> LET’S CREATE TOGETHER
-            </div>
-            <span className="art-number">01 / INFINITE POSSIBILITIES</span>
+          <a className="scroll-hint" href="#about">
+            <ArrowDown size={17} /> SCROLL TO EXPLORE
+          </a>
+          <div className="hero-progress-bar" aria-hidden="true">
+            <div />
           </div>
         </div>
-        <a className="scroll-hint" href="#about">
-          <ArrowDown size={17} /> SCROLL TO EXPLORE
-        </a>
       </section>
       <section id="about" className="section">
         <div className="container">
-          <div data-reveal>
+          <div data-reveal="title">
             <SectionTitle
               tag="ABOUT US"
               title="서로 다른 우리가, 함께 만드는 내일"
@@ -140,7 +152,7 @@ export default function Home() {
       </section>
       <section id="activities" className="section soft-bg">
         <div className="container">
-          <div data-reveal>
+          <div data-reveal="title">
             <SectionTitle
               tag="OUR ACTIVITIES"
               title="배움을 넘어, 경험으로"
@@ -175,7 +187,7 @@ export default function Home() {
       </section>
       <section className="section home-projects">
         <div className="container">
-          <div className="section-heading-row" data-reveal>
+          <div className="section-heading-row" data-reveal="title">
             <div>
               <span className="eyebrow">MADE BY DC&M</span>
               <h2>우리가 만든 결과물</h2>
@@ -237,12 +249,16 @@ export default function Home() {
         </div>
       </section>
       <section className="home-end">
-        <div className="container" data-reveal>
+        <div className="container" data-reveal="lines">
           <span className="eyebrow">YOUR NEXT CHAPTER</span>
           <h2>
-            당신의 가능성도
-            <br />
-            이곳에서 시작됩니다.
+            {/* 줄마다 아래에서 밀려 올라오는 마스크 효과 */}
+            <span className="reveal-line">
+              <span>당신의 가능성도</span>
+            </span>
+            <span className="reveal-line">
+              <span>이곳에서 시작됩니다.</span>
+            </span>
           </h2>
           <Link href="/apply" className="button">
             DC&M과 함께하기

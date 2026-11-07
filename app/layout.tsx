@@ -23,7 +23,7 @@ export default function RootLayout({
           <div className="container footer-inner">
             <div>
               <a href="/" className="footer-brand">
-                DC&M<span>.</span>
+                DC&M
               </a>
               <p>Digital Contents & Multimedia</p>
               <p>다양한 시선이 만나, 새로운 가능성이 됩니다.</p>

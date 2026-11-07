@@ -125,9 +125,6 @@ export default function Home() {
           <a className="scroll-hint" href="#about">
             <ArrowDown size={17} /> SCROLL TO EXPLORE
           </a>
-          <div className="hero-progress-bar" aria-hidden="true">
-            <div />
-          </div>
         </div>
       </section>
       <section id="about" className="section">

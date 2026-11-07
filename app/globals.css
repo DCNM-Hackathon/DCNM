@@ -889,6 +889,7 @@ footer {
 .project-join {
   background: white;
   color: var(--navy);
+  border-top: 1px solid #efefef;
 }
 .project-join p {
   color: var(--muted);
